@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="payment_pending">待确认</string>
+    <string name="payment_pending_count">待确认 · %1$d</string>
+</resources>
