@@ -8,7 +8,6 @@
     <img src="https://img.shields.io/badge/Java-17-437291" alt="Java 17">
     <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue" alt="MIT License"></a>
   </p>
-  <p><a href="#真机预览">真机预览</a> · <a href="#构建与运行">构建与运行</a> · <a href="#ai-与离线使用">AI 与离线使用</a> · <a href="https://github.com/shanchuann/WoolLedger/issues">反馈问题</a></p>
 </div>
 
 羊毛账本是一款原生 Android 个人记账应用。手动录入、用一句话描述消费，或通过离线语音输入，再用消费课表、分类统计和小票式报告回看消费习惯。账目保存在本机，无需注册账号，也无需部署后端。
