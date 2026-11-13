@@ -15,7 +15,7 @@
 
 ## 真机预览
 
-以下五张图片来自 Android 真机，展示账单、统计、录入、设置与助手界面。截图中的金额仅用于功能展示。
+以下六张图片来自 Android 真机，展示账单、统计、录入、设置、助手与月度总结界面。截图中的金额仅用于功能展示。
 
 <table>
   <tr>
@@ -23,11 +23,10 @@
     <td align="center" width="33%"><img src="docs/screenshots/statistics.png" width="260" alt="统计页：每日支出堆叠柱与分类占比"><br><strong>统计 · 看见钱花在哪里</strong></td>
     <td align="center" width="33%"><img src="docs/screenshots/new-entry.png" width="260" alt="记一笔：自然语言输入与分类选择"><br><strong>记一笔 · 手动、文字、语音</strong></td>
   </tr>
-</table>
-<table>
   <tr>
-    <td align="center" width="50%"><img src="docs/screenshots/settings.png" width="260" alt="我的页面：月度概览、预算、账期和记账偏好"><br><strong>我的 · 按自己的节奏记账</strong></td>
-    <td align="center" width="50%"><img src="docs/screenshots/assistant.png" width="260" alt="蓝羊羊助手：账本问答与自然语言输入"><br><strong>蓝羊羊 · 和账本聊一聊</strong></td>
+    <td align="center" width="33%"><img src="docs/screenshots/settings.png" width="260" alt="我的页面：月度概览、预算、账期和记账偏好"><br><strong>我的 · 按自己的节奏记账</strong></td>
+    <td align="center" width="33%"><img src="docs/screenshots/assistant.png" width="260" alt="蓝羊羊助手：账本问答与自然语言输入"><br><strong>蓝羊羊 · 和账本聊一聊</strong></td>
+    <td align="center" width="33%"><img src="docs/screenshots/monthly-receipt.png" width="260" alt="月度总结：小票式分类明细、预算使用与 AI 消费总结"><br><strong>月度总结 · 打印一张消费小票</strong></td>
   </tr>
 </table>
 
