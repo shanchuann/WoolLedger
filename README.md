@@ -115,6 +115,10 @@ docs/screenshots/  # README 真机截图
 
 提交 Pull Request 前请运行 `assembleDebug` 和 `lintDebug`，验证涉及页面的浅色、深色显示与主要操作。涉及解析规则时，请附输入示例、预期字段和实际结果。
 
+### 当前验证状态
+
+2026-11-13：`assembleDebug` 构建通过。`lintDebug` 尚未通过，源码中存在录音/震动权限检查、字体样式常量和 AppCompat tint 用法等检查错误，以及其他警告。当前没有自动化回归测试；本文真机截图仅展示界面，不代表所有设备与全部操作均已验收。
+
 ## 许可与致谢
 
 项目原创代码使用 [MIT License](LICENSE)。第三方库、模型及其附带组件遵循各自许可证，见 [第三方声明](THIRD_PARTY_NOTICES.md)。感谢 sherpa-onnx、AndroidX、Material Components 等项目提供支持。
