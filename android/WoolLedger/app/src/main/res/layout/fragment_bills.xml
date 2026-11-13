@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/paper"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="top"
+        android:minHeight="56dp"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/page"
+        android:paddingTop="3dp"
+        android:paddingEnd="@dimen/page"
+        android:paddingBottom="2dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/bills_title"
+                style="@style/Text.Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/title_bills" />
+
+            <TextView
+                android:id="@+id/bills_sub"
+                style="@style/Text.Sub"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="This month · 0 笔" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/bills_back"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/bg_round_white"
+            android:contentDescription="关闭账单页返回"
+            android:padding="8dp"
+            android:src="@drawable/ic_close" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/bills_pill"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/page"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="@dimen/page"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/bg_pill_white"
+        android:elevation="2dp"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/page"
+        android:paddingTop="14dp"
+        android:paddingEnd="@dimen/page"
+        android:paddingBottom="14dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/bills_expense"
+                style="@style/Bills.PillValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="¥0.00" />
+
+            <TextView
+                style="@style/Bills.PillLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:text="@string/filter_expense" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/bills_income"
+                style="@style/Bills.PillValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+¥0.00"
+                android:textColor="@color/bills_income" />
+
+            <TextView
+                style="@style/Bills.PillLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:text="@string/filter_income" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/bills_balance"
+                style="@style/Bills.PillValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="¥0.00" />
+
+            <TextView
+                style="@style/Bills.PillLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:text="@string/label_balance" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/bills_search"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginStart="@dimen/page"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="@dimen/page"
+        android:layout_marginBottom="6dp"
+        android:background="@drawable/bg_input"
+        android:hint="@string/search_hint"
+        android:imeOptions="actionSearch"
+        android:inputType="text"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:singleLine="true"
+        android:textColor="@color/ink"
+        android:textColorHint="@color/ink3"
+        android:textSize="13sp" />
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/page"
+        android:paddingEnd="@dimen/page"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/chip_all"
+                    style="@style/Bills.Chip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="6dp"
+                    android:text="@string/label_all" />
+                <TextView
+                    android:id="@+id/chip_expense"
+                    style="@style/Bills.Chip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="6dp"
+                    android:text="@string/filter_expense" />
+                <TextView
+                    android:id="@+id/chip_income"
+                    style="@style/Bills.Chip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="6dp"
+                    android:text="@string/filter_income" />
+                <TextView
+                    android:id="@+id/chip_study"
+                    style="@style/Bills.Chip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="6dp"
+                    android:text="@string/filter_study" />
+                <TextView
+                    android:id="@+id/chip_medical"
+                    style="@style/Bills.Chip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="6dp"
+                    android:text="@string/filter_medical" />
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/bills_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:overScrollMode="never"
+            android:paddingStart="@dimen/page"
+            android:paddingEnd="@dimen/page"
+            android:paddingBottom="86dp"
+            android:scrollbars="none" />
+
+        <LinearLayout
+            android:id="@+id/bills_empty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingStart="@dimen/page"
+            android:paddingEnd="@dimen/page"
+            android:visibility="gone">
+
+            <View
+                android:id="@+id/bills_empty_ring"
+                android:layout_width="54dp"
+                android:layout_height="54dp"
+                android:background="@drawable/bills_ring" />
+
+            <ImageView
+                android:id="@+id/bills_empty_icon"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_marginTop="-38dp"
+                android:src="@drawable/ic_nav_bills"
+                android:tint="@color/ink3" 
+        android:contentDescription="@null" />
+
+            <TextView
+                android:id="@+id/bills_empty_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="这里还没有账"
+                android:textColor="@color/ink"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/bills_empty_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="点下面的按钮记第一笔"
+                android:textColor="@color/ink3"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/bills_empty_add"
+                style="@style/Btn.Ghost"
+                android:layout_width="wrap_content"
+                android:layout_height="44dp"
+                android:layout_marginTop="18dp"
+                android:paddingStart="22dp"
+                android:paddingEnd="22dp"
+                android:text="@string/title_add" />
+        </LinearLayout>
+    </FrameLayout>
+</LinearLayout>

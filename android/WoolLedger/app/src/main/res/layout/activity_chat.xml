@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 蓝羊羊 · 说一句就记（复刻 preview #s-chat）
+     纸底 + 44dp 网格（ChatBackdrop 代码绘制）→ 页头 → 对话流 → 建议 chips → 输入条 -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/chat_frame"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/paper">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!-- 页头：蓝羊羊 / 正在读你 10 月的 23 笔账 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top"
+            android:minHeight="56dp"
+            android:orientation="horizontal"
+            android:paddingStart="@dimen/page"
+            android:paddingTop="3dp"
+            android:paddingEnd="@dimen/page"
+            android:paddingBottom="2dp">
+
+            <ImageView
+            android:id="@+id/chat_back"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:background="@drawable/bg_round_white"
+            android:contentDescription="返回"
+            android:padding="8dp"
+            android:src="@drawable/ic_back" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Text.Title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="蓝羊羊" />
+
+                <TextView
+                    android:id="@+id/chat_sub"
+                    style="@style/Text.Sub"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="正在读你 10 月的 23 笔账" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:includeFontPadding="false"
+                android:letterSpacing="0.14"
+                android:text="AI"
+                android:textColor="@color/ink3"
+                android:textSize="9sp" />
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/chat_log"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:clipToPadding="false"
+            android:overScrollMode="never"
+            android:paddingStart="@dimen/page"
+            android:paddingTop="14dp"
+            android:paddingEnd="@dimen/page"
+            android:paddingBottom="4dp"
+            android:scrollbars="none" />
+
+        <!-- 建议 chips -->
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:overScrollMode="never"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingStart="@dimen/page"
+                android:paddingTop="4dp"
+                android:paddingEnd="@dimen/page"
+                android:paddingBottom="10dp">
+
+                <TextView
+                    android:id="@+id/chat_sugg1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_pill_white"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:includeFontPadding="false"
+                    android:paddingStart="10dp"
+                    android:paddingTop="6dp"
+                    android:paddingEnd="10dp"
+                    android:paddingBottom="6dp"
+                    android:text="这个月还能花多少？"
+                    android:textColor="@color/ink2"
+                    android:textSize="11sp" />
+
+                <TextView
+                    android:id="@+id/chat_sugg2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:background="@drawable/bg_pill_white"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:includeFontPadding="false"
+                    android:paddingStart="10dp"
+                    android:paddingTop="6dp"
+                    android:paddingEnd="10dp"
+                    android:paddingBottom="6dp"
+                    android:text="帮我记：豆浆 3 块"
+                    android:textColor="@color/ink2"
+                    android:textSize="11sp" />
+
+                <TextView
+                    android:id="@+id/chat_sugg3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:background="@drawable/bg_pill_white"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:includeFontPadding="false"
+                    android:paddingStart="10dp"
+                    android:paddingTop="6dp"
+                    android:paddingEnd="10dp"
+                    android:paddingBottom="6dp"
+                    android:text="夜宵为什么这么贵？"
+                    android:textColor="@color/ink2"
+                    android:textSize="11sp" />
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <!-- 输入条：描边圆角盒 + 墨色圆形发送 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="bottom"
+            android:orientation="horizontal"
+            android:paddingStart="@dimen/page"
+            android:paddingTop="10dp"
+            android:paddingEnd="@dimen/page"
+            android:paddingBottom="14dp">
+
+            <LinearLayout
+                android:id="@+id/chat_box"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:minHeight="44dp"
+                android:orientation="horizontal"
+                android:paddingStart="14dp"
+                android:paddingTop="9dp"
+                android:paddingEnd="14dp"
+                android:paddingBottom="9dp">
+
+                <EditText
+                    android:id="@+id/chat_input"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:hint="@string/chat_hint"
+                    android:imeOptions="actionSend"
+                    android:includeFontPadding="false"
+                    android:inputType="text"
+                    android:maxLines="3"
+                    android:padding="0dp"
+                    android:textColor="@color/ink"
+                    android:textColorHint="@color/ink4"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/chat_send"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:layout_marginStart="8dp"
+                android:clickable="true"
+                android:contentDescription="发送"
+                android:focusable="true"
+                android:padding="9dp"
+                android:src="@drawable/ic_arrow"
+                android:tint="#FFFFFF" />
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>

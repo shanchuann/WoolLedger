@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="paper">#FAFAF7</color>
+    <color name="paper_card">#FFFDF7</color>
+    <color name="ink">#1A1F24</color>
+    <color name="ink2">#5C6166</color>
+    <color name="ink3">#6B7076</color>
+    <color name="ink4">#9AA0A6</color>
+    <color name="line">#DFE2DE</color>
+    <color name="line2">#ECEEE9</color>
+    <color name="blue">#90C8F8</color>
+    <color name="blue2">#5FA8E8</color>
+    <color name="blue_deep">#2F6EA8</color>
+    <color name="blue_tint">#EAF4FE</color>
+    <color name="hl">#F5E663</color>
+    <color name="amber">#E8A15C</color>
+    <color name="coral">#D9614C</color>
+    <color name="sky">#8FB8D8</color>
+    <color name="green">#4FB286</color>
+    <color name="danger">#C0442E</color>
+    <color name="night">#0B1016</color>
+    <color name="paper_dark">#12171E</color>
+    <color name="card_dark">#171F27</color>
+    <color name="line_dark">#2A323B</color>
+    <color name="ink_dark">#F3EFE4</color>
+    <color name="ink2_dark">#B7B2A5</color>
+    <color name="ink3_dark">#8F9AA6</color>
+    <color name="green_dark">#79D3A6</color>
+    <color name="icon_bg">#FAFAF7</color>
+</resources>

@@ -1,0 +1,529 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 记一笔 · 手动录入（复刻 preview #s-add）
+     页头 → 支出/收入分段 → 大金额 → 一句话 AI 识别 → 分类宫格 → 日期/时段/备注/溯源 → 底部保存 -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/add_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/paper"
+    android:orientation="vertical">
+
+    <!-- 页头：返回 + 记一笔 / New Entry -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="top"
+        android:minHeight="56dp"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/page"
+        android:paddingTop="3dp"
+        android:paddingEnd="@dimen/page"
+        android:paddingBottom="2dp">
+
+        <ImageView
+            android:id="@+id/add_back"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:background="@drawable/bg_round_white"
+            android:contentDescription="返回"
+            android:padding="8dp"
+            android:src="@drawable/ic_back" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/add_title"
+                style="@style/Text.Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/title_add" />
+
+            <TextView
+                android:id="@+id/add_subtitle"
+                style="@style/Text.Sub"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="New Entry" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="34dp"
+            android:layout_height="1dp" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:fillViewport="true"
+        android:overScrollMode="never"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="@dimen/page"
+            android:paddingEnd="@dimen/page"
+            android:paddingBottom="14dp">
+
+            <!-- 支出 / 收入：胶囊轨道，选中块由代码铺墨 -->
+            <FrameLayout
+                android:id="@+id/add_seg_wrap"
+                android:layout_width="match_parent"
+                android:layout_height="42dp"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/add_seg_track"
+                android:padding="3dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/add_seg_expense"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:gravity="center"
+                        android:letterSpacing="0.06"
+                        android:text="@string/filter_expense"
+                        android:textColor="@color/paper"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/add_seg_income"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:gravity="center"
+                        android:letterSpacing="0.06"
+                        android:text="@string/filter_income"
+                        android:textColor="@color/ink3"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </FrameLayout>
+
+            <!-- 大金额：¥ 小号 + 44sp 等宽数字 + 墨色发丝线 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="bottom"
+                android:orientation="horizontal"
+                android:paddingTop="20dp"
+                android:paddingBottom="12dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="6dp"
+                    android:includeFontPadding="false"
+                    android:paddingBottom="6dp"
+                    android:text="¥"
+                    android:textColor="@color/ink"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/add_amount"
+                    style="@style/Text.BigNum"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:fontFamily="sans-serif-medium"
+                    android:fontFeatureSettings="tnum"
+                    android:hint="0.00"
+                    android:imeOptions="actionNext"
+                    android:includeFontPadding="false"
+                    android:inputType="numberDecimal"
+                    android:letterSpacing="-0.02"
+                    android:maxLength="10"
+                    android:maxLines="1"
+                    android:padding="0dp"
+                    android:textColor="@color/ink"
+                    android:textColorHint="@color/ink4"
+                    android:textSize="44sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/ink" />
+
+            <!-- 一句话记账 + AI 识别（描边小盒） -->
+            <LinearLayout
+                android:id="@+id/add_prompt_box"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:orientation="vertical"
+                android:padding="12dp"
+                android:background="@drawable/add_prompt_card">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:includeFontPadding="false"
+                        android:letterSpacing="0.16"
+                        android:text="@string/add_prompt"
+                        android:textColor="@color/ink3"
+                        android:textSize="11sp" />
+
+                    <TextView
+                        android:id="@+id/add_ai_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_chip_on"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:includeFontPadding="false"
+                        android:letterSpacing="0.06"
+                        android:paddingStart="10dp"
+                        android:paddingTop="6dp"
+                        android:paddingEnd="10dp"
+                        android:paddingBottom="6dp"
+                        android:text="AI 识别"
+                        android:textColor="@color/paper"
+                        android:textSize="11sp"
+                        android:textStyle="bold" />
+                    
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/add_prompt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@null"
+                    android:hint="午饭食堂 15，昨天打车 23"
+                    android:imeOptions="actionDone"
+                    android:includeFontPadding="false"
+                    android:inputType="text"
+                    android:maxLines="2"
+                    android:padding="0dp"
+                    android:textColor="@color/ink"
+                    android:textColorHint="@color/ink4"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/add_ai_hint"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:includeFontPadding="false"
+                    android:textColor="@color/ink3"
+                    android:textSize="11sp"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <!-- 分类标题行 + 当前分类状态 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="10dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:includeFontPadding="false"
+                    android:letterSpacing="0.16"
+                    android:text="@string/stat_cats"
+                    android:textColor="@color/ink3"
+                    android:textSize="11sp" />
+
+                <TextView
+                    android:id="@+id/add_cat_state"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    android:text="未选择"
+                    android:textColor="@color/ink"
+                    android:textSize="11sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <!-- 分类宫格：支出 9 / 收入 5，3 列 -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/add_cats"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                android:overScrollMode="never" />
+
+            <!-- 日期 / 时段 / 备注 / 录入方式 / 录入时间 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/add_row_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingTop="14dp"
+                    android:paddingBottom="14dp">
+
+                    <TextView
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:includeFontPadding="false"
+                        android:letterSpacing="0.12"
+                        android:text="@string/detail_date"
+                        android:textColor="@color/ink3"
+                        android:textSize="11sp" />
+
+                    <TextView
+                        android:id="@+id/add_date"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        android:includeFontPadding="false"
+                        android:textColor="@color/ink"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:includeFontPadding="false"
+                        android:text="›"
+                        android:textColor="@color/ink4"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/line2" />
+
+                <LinearLayout
+                    android:id="@+id/add_row_slot"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingTop="14dp"
+                    android:paddingBottom="14dp">
+
+                    <TextView
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:includeFontPadding="false"
+                        android:letterSpacing="0.12"
+                        android:text="@string/stat_slots"
+                        android:textColor="@color/ink3"
+                        android:textSize="11sp" />
+
+                    <TextView
+                        android:id="@+id/add_slot"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        android:includeFontPadding="false"
+                        android:textColor="@color/ink"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:includeFontPadding="false"
+                        android:text="›"
+                        android:textColor="@color/ink4"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/line2" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingTop="14dp"
+                    android:paddingBottom="14dp">
+
+                    <TextView
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:includeFontPadding="false"
+                        android:letterSpacing="0.12"
+                        android:text="@string/detail_note"
+                        android:textColor="@color/ink3"
+                        android:textSize="11sp" />
+
+                    <EditText
+                        android:id="@+id/add_note"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:gravity="end"
+                        android:hint="备注（可选）"
+                        android:imeOptions="actionDone"
+                        android:includeFontPadding="false"
+                        android:inputType="text"
+                        android:maxLength="30"
+                        android:maxLines="1"
+                        android:padding="0dp"
+                        android:textColor="@color/ink"
+                        android:textColorHint="@color/ink4"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/line2" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingTop="14dp"
+                    android:paddingBottom="14dp">
+
+                    <TextView
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:includeFontPadding="false"
+                        android:letterSpacing="0.12"
+                        android:text="@string/detail_source"
+                        android:textColor="@color/ink3"
+                        android:textSize="11sp" />
+
+                    <TextView
+                        android:id="@+id/add_source"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        android:includeFontPadding="false"
+                        android:text="手动录入"
+                        android:textColor="@color/ink"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/line2" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingTop="14dp"
+                    android:paddingBottom="14dp">
+
+                    <TextView
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:includeFontPadding="false"
+                        android:letterSpacing="0.12"
+                        android:text="@string/detail_created"
+                        android:textColor="@color/ink3"
+                        android:textSize="11sp" />
+
+                    <TextView
+                        android:id="@+id/add_time"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        android:includeFontPadding="false"
+                        android:textColor="@color/ink"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- 底部保存：尺寸/位置与首页导航栏（nav_bar）和蓝羊羊入口（nav_ai）完全对齐，
+         这样从导航栏进记一笔时共享元素过渡是原位变化，不会位移/缩放。 -->
+    <LinearLayout
+        android:id="@+id/add_bottom_bar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginBottom="14dp"
+        android:background="@color/paper"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="12dp"
+        android:paddingTop="0dp"
+        android:paddingEnd="12dp"
+        android:paddingBottom="0dp">
+
+                    
+<TextView
+            android:id="@+id/add_save"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_marginEnd="14dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_btn_primary"
+            android:textColor="#FFFFFF"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:text="保存这一笔 ¥0.00"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <ImageView
+                android:id="@+id/add_mic"
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:background="@drawable/bg_round_white"
+                android:contentDescription="语音输入"
+                android:padding="14dp"
+                android:src="@drawable/ic_mic" />
+    </LinearLayout>
+</LinearLayout>

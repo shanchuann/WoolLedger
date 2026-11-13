@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="page">18dp</dimen>
+    <dimen name="card_radius">14dp</dimen>
+    <dimen name="hair">1dp</dimen>
+    <dimen name="title_size">21sp</dimen>
+    <dimen name="sub_size">11.5sp</dimen>
+    <dimen name="body">13sp</dimen>
+    <dimen name="label">10sp</dimen>
+    <dimen name="big_num">34sp</dimen>
+    <dimen name="row_h">48dp</dimen>
+    <dimen name="nav_h">60dp</dimen>
+</resources>

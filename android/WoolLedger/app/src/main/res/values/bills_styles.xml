@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- 账单 / 详情 / 这一格 三屏共用的文字与行样式；只在本包里用，前缀 bills 归属 -->
+    <style name="Bills" />
+
+    <!-- 详情行：左标签 11sp 加宽字距 -->
+    <style name="Bills.RowLabel">
+        <item name="android:textSize">11sp</item>
+        <item name="android:textColor">@color/ink3</item>
+        <item name="android:letterSpacing">0.12</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- 详情行：右值 13sp 加粗、等宽数字、右对齐 -->
+    <style name="Bills.RowValue">
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">@color/ink</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:gravity">end</item>
+        <item name="android:fontFeatureSettings">tnum</item>
+    </style>
+
+    <!-- 汇总胶囊里的数字：15.5sp / 900 -->
+    <style name="Bills.PillValue">
+        <item name="android:textSize">15.5sp</item>
+        <item name="android:textColor">@color/ink</item>
+        <item name="android:fontFamily">sans-serif-black</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:fontFeatureSettings">tnum</item>
+    </style>
+
+    <!-- 汇总胶囊里的标签：10sp / 0.14 字距 -->
+    <style name="Bills.PillLabel">
+        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">@color/ink3</item>
+        <item name="android:letterSpacing">0.14</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- 这一格合计的引导小字：10sp / 0.22 字距 -->
+    <style name="Bills.CellLabel">
+        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">@color/ink3</item>
+        <item name="android:letterSpacing">0.22</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- 筛选 chip：11sp / 999dp 圆角描边 -->
+    <style name="Bills.Chip">
+        <item name="android:background">@drawable/bg_chip</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:textColor">@color/ink2</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingStart">11dp</item>
+        <item name="android:paddingEnd">11dp</item>
+        <item name="android:paddingTop">6dp</item>
+        <item name="android:paddingBottom">6dp</item>
+        <item name="android:maxLines">1</item>
+    </style>
+
+    <!-- 列表行金额：14sp / 800 / 等宽数字 -->
+    <style name="Bills.Amount">
+        <item name="android:textSize">17sp</item>
+        <item name="android:textColor">@color/ink</item>
+        <item name="android:fontFamily">sans-serif-black</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:letterSpacing">-0.02</item>
+    </style>
+
+    <!-- 列表行备注：13sp / 600 -->
+    <style name="Bills.RowName">
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">@color/ink</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <!-- 列表行「分类 · 时段」：11sp / 0.08 字距 -->
+    <style name="Bills.RowCat">
+        <item name="android:textSize">11sp</item>
+        <item name="android:textColor">@color/ink3</item>
+        <item name="android:letterSpacing">0.08</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:layout_marginTop">2dp</item>
+    </style>
+
+    <!-- 列表行时间：11sp / 固定 50dp -->
+    <style name="Bills.RowTime">
+        <item name="android:textSize">11sp</item>
+        <item name="android:textColor">@color/ink3</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:fontFeatureSettings">tnum</item>
+        <item name="android:maxLines">1</item>
+    </style>
+
+    <!-- 日头：日期 / 星期 / 当天合计 -->
+    <style name="Bills.DayTitle">
+        <item name="android:textSize">11sp</item>
+        <item name="android:textColor">@color/ink</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">0.06</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <style name="Bills.DaySub">
+        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">@color/ink3</item>
+        <item name="android:letterSpacing">0.12</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <style name="Bills.DaySum">
+        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">@color/ink3</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:fontFeatureSettings">tnum</item>
+    </style>
+</resources>

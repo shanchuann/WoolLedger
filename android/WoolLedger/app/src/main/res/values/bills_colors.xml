@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 预览稿 - inc（收入绿），比调色板的 green 更深，用于金额与汇总胶囊 -->
+    <color name="bills_income">#2C8A63</color>
+    <!-- 夜间收入绿（预览 .phone.dark 的 inc 色） -->
+    <color name="bills_income_dark">#6FD3A5</color>
+    <!-- 夜间主按钮文字：天光蓝底上的深字 -->
+    <color name="bills_on_primary_dark">#101820</color>
+</resources>

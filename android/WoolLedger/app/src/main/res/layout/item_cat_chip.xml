@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 记一笔：分类格子。选中态（墨色描边 + 白底 + 加粗）在 AddRecordActivity 里用 GradientDrawable 切换。 -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/cat_chip"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingStart="10dp"
+    android:paddingEnd="10dp">
+
+    <View
+        android:id="@+id/cat_dot"
+        android:layout_width="7dp"
+        android:layout_height="7dp" />
+
+    <TextView
+        android:id="@+id/cat_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="7dp"
+        android:includeFontPadding="false"
+        android:singleLine="true"
+        android:textColor="@color/ink2"
+        android:textSize="12sp" />
+</LinearLayout>

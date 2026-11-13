@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 蓝羊羊：我说的话（右侧蓝气泡，气泡底色/圆角由 ChatAdapter 设置） -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="end"
+    android:orientation="vertical"
+    android:paddingTop="1dp"
+    android:paddingBottom="1dp">
+
+    <TextView
+        android:id="@+id/chat_me_body"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:includeFontPadding="false"
+        android:lineSpacingExtra="2dp"
+        android:maxWidth="280dp"
+        android:textColor="#FFFFFF"
+        android:textSize="13sp" />
+</LinearLayout>

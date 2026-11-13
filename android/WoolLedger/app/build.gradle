@@ -1,0 +1,205 @@
+plugins {
+    id 'com.android.application'
+}
+
+// 版本号单一来源：android/WoolLedger/version.properties
+def versionProps = new Properties()
+def versionPropsFile = file("../version.properties")
+if (!versionPropsFile.exists()) versionPropsFile = file("version.properties")
+if (versionPropsFile.exists()) {
+    versionPropsFile.withInputStream { versionProps.load(it) }
+}
+def appVersionCode = (versionProps.getProperty("VERSION_CODE") ?: "1").toInteger()
+def appVersionName = versionProps.getProperty("VERSION_NAME") ?: "1.0.0"
+
+// release 签名：keystore.properties 只在开发机本地存在（已 gitignore），
+// 没有配置时 release 产物不签名；本地安装使用 debug 构建
+def keystoreProps = new Properties()
+def keystorePropsFile = file("../keystore.properties")
+def hasReleaseSigning = false
+if (keystorePropsFile.exists()) {
+    keystorePropsFile.withInputStream { keystoreProps.load(it) }
+    def store = keystoreProps.getProperty("storeFile")
+    hasReleaseSigning = store != null && file(store).exists()
+}
+
+android {
+    // 打包产物统一命名：wool_ledger.apk
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            output.outputFileName = "wool_ledger.apk"
+        }
+    }
+
+    namespace 'com.wool.ledger'
+    compileSdk 35
+
+    defaultConfig {
+        ndk {
+            // sherpa-onnx 带 4 个 ABI 的原生库，只留常用的两个，包体从 130MB 降到 ~60MB
+            abiFilters 'arm64-v8a', 'x86_64'
+        }
+        applicationId "com.wool.ledger"
+        minSdk 24
+        targetSdk 35
+        versionCode appVersionCode
+        versionName appVersionName
+    }
+    signingConfigs {
+        if (hasReleaseSigning) {
+            release {
+                storeFile file(keystoreProps.getProperty("storeFile"))
+                storePassword keystoreProps.getProperty("storePassword")
+                keyAlias keystoreProps.getProperty("keyAlias")
+                keyPassword keystoreProps.getProperty("keyPassword")
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            if (hasReleaseSigning) signingConfig signingConfigs.release
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    buildFeatures {
+        buildConfig true
+    }
+
+    androidResources {
+        // 内置语音模型是 .tar.bz2，本身就压过了，别再让 aapt2 折腾一遍，
+        // 直接从 APK 里 mmap 读，首解时省一次解压
+        noCompress.add('bz2')
+    }
+}
+
+dependencies {
+    // 解压 tar.bz2 语音模型
+    implementation 'org.apache.commons:commons-compress:1.26.1'
+    // 1.26 的 BZip2 流要用 commons-io 的 CloseShieldInputStream，漏了会在解压时 NoClassDefFoundError
+    implementation 'commons-io:commons-io:2.16.1'
+    implementation 'org.tukaani:xz:1.9'
+    // 本地 AAR 目录（构建脚本自动下载 sherpa-onnx.aar 到这里）
+    implementation fileTree(dir: 'libs', include: ['*.aar'])
+    // sherpa-onnx 1.10+ 的 Java 接口是 Kotlin data class（构造器里调 Intrinsics.checkNotNullParameter），
+    // AAR 是侧载的、没有 pom，kotlin-stdlib 不会自动进来，必须手动声明
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.8.22'
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation 'androidx.recyclerview:recyclerview:1.3.2'
+    implementation 'androidx.core:core:1.13.1'
+    implementation 'com.google.android.material:material:1.12.0'
+}
+
+/* ---------- 自动获取 sherpa-onnx Android AAR（失败不阻塞构建） ----------
+   官方把 AAR 和 jni 库打包在 sherpa-onnx-vX-android.tar.bz2 里，
+   这里下载压缩包，用系统 tar 解出 .aar 放进 app/libs。            */
+def sherpaAarUrl = "https://ghproxy.net/https://github.com/k2-fsa/sherpa-onnx/releases/download/v1.13.7/sherpa-onnx-1.13.7.aar"
+def sherpaAarMirror = "https://github.com/k2-fsa/sherpa-onnx/releases/download/v1.13.7/sherpa-onnx-1.13.7.aar"
+
+task downloadSherpaAar {
+    def outDir = new File(projectDir, "libs")
+    def outAar = new File(outDir, "sherpa-onnx.aar")
+    def target = 49113869L
+    outputs.upToDateWhen { outAar.exists() && outAar.length() >= target }
+    doLast {
+        if (outAar.exists() && outAar.length() >= target) {
+            println "[sherpa] AAR 已就绪，跳过"
+            return
+        }
+        outDir.mkdirs()
+        def urls = [
+                "https://ghproxy.net/https://github.com/k2-fsa/sherpa-onnx/releases/download/v1.13.7/sherpa-onnx-1.13.7.aar",
+                "https://gh-proxy.com/https://github.com/k2-fsa/sherpa-onnx/releases/download/v1.13.7/sherpa-onnx-1.13.7.aar",
+                "https://github.com/k2-fsa/sherpa-onnx/releases/download/v1.13.7/sherpa-onnx-1.13.7.aar"
+        ]
+        for (String url : urls) {
+            for (int i = 0; i < 6; i++) {
+                long got = outAar.exists() ? outAar.length() : 0L
+                if (got >= target) break
+                try {
+                    println "[sherpa] 续传 " + got + "/" + target
+                    def pb = new ProcessBuilder("curl", "-L", "--fail", "--max-time", "200",
+                            "-C", "-", "-o", outAar.absolutePath, url)
+                    pb.redirectErrorStream(true)
+                    pb.start().waitFor()
+                } catch (Exception e) {
+                    println "[sherpa] 下载异常：" + e.message
+                }
+            }
+            if (outAar.exists() && outAar.length() >= target) {
+                println "[sherpa] AAR 就绪：" + outAar.length() + " bytes"
+                return
+            }
+        }
+        println "[sherpa] 未能自动获取 AAR，请手动放到 app/libs/sherpa-onnx.aar"
+    }
+}
+
+/* ---------- 内置离线语音模型 ----------
+   assets/voice-model/ 里的模型不进 git（见 .gitignore）。
+   开发机预先放在 build/voice-model/ 里就行；没有的话这里自己下（失败不阻塞，
+   APK 就不带内置模型，App 会退回原来的网络下载流程）。          */
+def voiceModelName = "sherpa-onnx-paraformer-zh-small-2024-03-09.tar.bz2"
+def voiceModelBytes = 77920048L
+def voiceAssetDir = new File(projectDir, "src/main/assets/voice-model")
+def voiceAsset = new File(voiceAssetDir, voiceModelName)
+def voiceModelCache = new File(buildDir, "voice-model/" + voiceModelName)
+
+task prepareVoiceModelAsset {
+    outputs.upToDateWhen { voiceAsset.exists() && voiceAsset.length() == voiceModelBytes }
+    doLast {
+        if (voiceAsset.exists() && voiceAsset.length() == voiceModelBytes) {
+            println "[voice] 内置模型已在 assets，跳过"
+            return
+        }
+        voiceAssetDir.mkdirs()
+        boolean cached = voiceModelCache.exists() && voiceModelCache.length() == voiceModelBytes
+        if (!cached) {
+            voiceModelCache.parentFile.mkdirs()
+            def urls = [
+                    "https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/" + voiceModelName,
+                    "https://ghproxy.net/https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/" + voiceModelName,
+                    "https://gh-proxy.com/https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/" + voiceModelName
+            ]
+            for (String url : urls) {
+                for (int i = 0; i < 6; i++) {
+                    long got = voiceModelCache.exists() ? voiceModelCache.length() : 0L
+                    if (got >= voiceModelBytes) break
+                    try {
+                        println "[voice] 续传 " + got + "/" + voiceModelBytes
+                        def pb = new ProcessBuilder("curl", "-L", "--fail", "--max-time", "400",
+                                "-C", "-", "-o", voiceModelCache.absolutePath, url)
+                        pb.redirectErrorStream(true)
+                        pb.start().waitFor()
+                    } catch (Exception e) {
+                        println "[voice] 下载异常：" + e.message
+                    }
+                }
+                if (voiceModelCache.exists() && voiceModelCache.length() >= voiceModelBytes) break
+            }
+        }
+        if (voiceModelCache.exists() && voiceModelCache.length() == voiceModelBytes) {
+            java.nio.file.Files.copy(voiceModelCache.toPath(), voiceAsset.toPath(),
+                    java.nio.file.StandardCopyOption.REPLACE_EXISTING)
+            println "[voice] 内置模型就绪：" + voiceAsset.length() + " bytes"
+        } else {
+            println "[voice] 没找到模型包，APK 不含内置模型（App 退回网络下载）"
+        }
+    }
+}
+
+// merge*Assets 不认 preBuild，这里单独挂一下，保证打包前模型已经落进 assets
+tasks.configureEach { t ->
+    if (t.name.startsWith("merge") && t.name.endsWith("Assets")) {
+        t.dependsOn prepareVoiceModelAsset
+    }
+}
+
+preBuild.dependsOn prepareVoiceModelAsset
+preBuild.dependsOn downloadSherpaAar

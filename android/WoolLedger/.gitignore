@@ -1,0 +1,8 @@
+# 路径相对 android/WoolLedger/（老版本写成了 android/WoolLedger/app/build/，等于没生效）
+app/build/
+.gradle/
+build/
+local.properties
+
+# 内置离线语音模型（78MB，构建时由 prepareVoiceModelAsset 从 build/voice-model 复制或下载）
+app/src/main/assets/voice-model/

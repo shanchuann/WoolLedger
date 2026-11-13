@@ -1,0 +1,25 @@
+# Android build and machine-specific files
+**/.gradle/
+**/build/
+**/local.properties
+**/.idea/
+*.iml
+.DS_Store
+Thumbs.db
+
+# Signing credentials and local secrets
+**/keystore.properties
+*.jks
+*.keystore
+.env
+.env.*
+!.env.example
+
+# Models, generated packages and local tooling
+android/WoolLedger/app/src/main/assets/voice-model/
+*.apk
+*.aab
+output/
+tools/
+.impeccable/
+~$*
