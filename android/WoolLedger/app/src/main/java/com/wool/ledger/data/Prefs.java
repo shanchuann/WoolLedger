@@ -36,11 +36,16 @@ public class Prefs {
     }
 
     public static double budget(Context c) {
+        try (android.database.Cursor cursor=DbHelper.get(c).getReadableDatabase().rawQuery("SELECT value FROM ledger_setting WHERE name='budget'",null)) {
+            if(cursor.moveToFirst()) return Double.parseDouble(cursor.getString(0));
+        }
         return Double.parseDouble(sp(c).getString("budget", "1500"));
     }
 
     public static void setBudget(Context c, double v) {
-        sp(c).edit().putString("budget", String.valueOf(v)).apply();
+        if (!Double.isFinite(v) || v < 0 || v > 10000000) throw new IllegalArgumentException("预算范围为 0–10000000");
+        android.content.ContentValues values=new android.content.ContentValues();values.put("name","budget");values.put("value",String.valueOf(v));
+        DbHelper.get(c).getWritableDatabase().insertWithOnConflict("ledger_setting",null,values,android.database.sqlite.SQLiteDatabase.CONFLICT_REPLACE);
     }
 
     public static boolean dark(Context c) {
@@ -160,6 +165,19 @@ public class Prefs {
 
     public static void setVoiceHintShown(Context c, boolean v) {
         sp(c).edit().putBoolean("voice_hint_shown", v).apply();
+    }
+
+    public static boolean autoCapture(Context c) { return sp(c).getBoolean("auto_capture", false); }
+    public static void setAutoCapture(Context c, boolean v) { sp(c).edit().putBoolean("auto_capture", v).apply(); }
+    public static boolean autoPost(Context c) { return sp(c).getBoolean("auto_post", true); }
+    public static void setAutoPost(Context c, boolean v) { sp(c).edit().putBoolean("auto_post", v).apply(); }
+    public static boolean agentOnline(Context c) { return sp(c).getBoolean("agent_online", false); }
+    public static void setAgentOnline(Context c, boolean v) { sp(c).edit().putBoolean("agent_online", v).apply(); }
+    public static String capturePackages(Context c) { return sp(c).getString("capture_packages", "com.tencent.mm,com.eg.android.AlipayGphone,com.unionpay"); }
+    public static void setCapturePackages(Context c, String v) { sp(c).edit().putString("capture_packages", v).apply(); }
+    public static boolean captures(Context c, String pkg) {
+        for (String p : capturePackages(c).split("[,，\\s]+")) if (p.equals(pkg)) return true;
+        return false;
     }
 
     public static boolean seeded(Context c) {

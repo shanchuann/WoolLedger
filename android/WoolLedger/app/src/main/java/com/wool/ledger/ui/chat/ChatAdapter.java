@@ -52,6 +52,9 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     /** 一张待确认的记账卡片。 */
     public static class Card {
+        public long actionId;
+        public String actionState="pending";
+        public boolean generic;
         public double amount;
         public String catCode = "other";
         public String when = "";
@@ -176,6 +179,8 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private void bindAi(AiVH h, Msg m) {
         Context ctx = h.itemView.getContext();
         h.stopDots();
+        h.body.setTextColor(com.wool.ledger.util.ThemeUtil.ink(ctx));
+        h.apTitle.setTextColor(com.wool.ledger.util.ThemeUtil.ink(ctx));h.apAmount.setTextColor(com.wool.ledger.util.ThemeUtil.ink(ctx));h.apCat.setTextColor(com.wool.ledger.util.ThemeUtil.ink3(ctx));h.apWhen.setTextColor(com.wool.ledger.util.ThemeUtil.ink3(ctx));
 
         boolean hasTrace = !m.typing && m.trace != null && !m.trace.isEmpty();
         h.traceBox.setVisibility(hasTrace ? View.VISIBLE : View.GONE);
@@ -216,6 +221,14 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private void bindCard(final AiVH h, final Msg m) {
         final Card c = m.card;
+        if(c.generic) {
+            boolean pending="pending".equals(c.actionState), applied="applied".equals(c.actionState);
+            h.apTitle.setText(pending?"待确认操作":applied?"已执行":"已结束");
+            h.apAmount.setText("操作 #"+c.actionId);h.apCat.setText(pending?"确认后才会修改账本":applied?"可以撤销本次操作":"账本保持当前状态");h.apWhen.setText("");
+            h.acts.setVisibility(pending||applied?View.VISIBLE:View.GONE);h.ok.setText(applied?"撤销":"确认执行");h.secret.setText("取消");h.secret.setVisibility(pending?View.VISIBLE:View.GONE);h.edit.setVisibility(View.GONE);
+            h.ok.setOnClickListener(v->{if(listener!=null)listener.onApprove(m,applied?3:0);});h.secret.setOnClickListener(v->{if(listener!=null)listener.onApprove(m,1);});return;
+        }
+        h.secret.setVisibility(View.VISIBLE);h.edit.setVisibility(View.VISIBLE);h.ok.setText("记上");h.secret.setText("保密");
         h.apTitle.setText(c.done ? (c.secret ? "已写入账本 · 保密" : "已写入账本") : "等你确认");
         h.apAmount.setText("¥" + Money.fmt(c.amount));
         h.apCat.setText(Category.nameOf(c.catCode));
@@ -344,7 +357,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
             GradientDrawable cardBg = new GradientDrawable();
             cardBg.setCornerRadius(dp(ctx, 2));
-            cardBg.setColor(ContextCompat.getColor(ctx, R.color.paper_card));
+            cardBg.setColor(com.wool.ledger.util.ThemeUtil.card(ctx));
             cardBg.setStroke(dp(ctx, 1), ContextCompat.getColor(ctx, R.color.line));
             approve.setBackground(cardBg);
 

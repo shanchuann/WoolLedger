@@ -156,7 +156,7 @@ public class TimetableView extends View {
         tp.setTextSize(dp(10));
         tp.setTextAlign(Paint.Align.CENTER);
         for (int i = 0; i < COLS; i++) {
-            tp.setTypeface(android.graphics.Typeface.create("sans-serif-medium", 0));
+            tp.setTypeface(android.graphics.Typeface.create("sans-serif-medium", android.graphics.Typeface.NORMAL));
             c.drawText(WD[i], left + i * cw + cw / 2f, headerH * 0.62f, tp);
         }
         // 今天：列名下方一个小点
@@ -264,7 +264,7 @@ public class TimetableView extends View {
                     c.drawRoundRect(rect, dp(4), dp(4), p);
                     p.setAlpha(255);
                     tp.setColor(Color.WHITE);
-                    tp.setTypeface(android.graphics.Typeface.create("sans-serif-medium", 0));
+                    tp.setTypeface(android.graphics.Typeface.create("sans-serif-medium", android.graphics.Typeface.NORMAL));
                     tp.setTextSize(dp(9.5f));
                     tp.setTextAlign(Paint.Align.CENTER);
                     c.drawText((b.isIncome() ? "+" : "-") + Money.shortFmt(b.amount),
@@ -303,7 +303,7 @@ public class TimetableView extends View {
         c.drawRoundRect(rect, rad, rad, p);
 
         tp.setColor(Color.WHITE);
-        tp.setTypeface(android.graphics.Typeface.create("sans-serif-medium", 0));
+        tp.setTypeface(android.graphics.Typeface.create("sans-serif-medium", android.graphics.Typeface.NORMAL));
         tp.setTextSize(dp(9.5f));
         tp.setTextAlign(Paint.Align.CENTER);
         String txt = (bill.isIncome() ? "+" : "-") + Money.shortFmt(bill.amount);

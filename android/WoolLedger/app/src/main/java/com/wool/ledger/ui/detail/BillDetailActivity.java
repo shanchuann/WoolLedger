@@ -197,7 +197,7 @@ public class BillDetailActivity extends AppCompatActivity {
         noteText.setText(b.note == null || b.note.isEmpty() ? "—" : b.note);
         dateText.setText(DateUtil.monthDay(b.billDate) + " 周" + DateUtil.weekdayCn(b.billDate));
         timeText.setText(b.billTime);
-        sourceText.setText(b.source == 2 ? "语音录入" : (b.source == 1 ? "AI 对话" : "手动录入"));
+        sourceText.setText(b.source == 3 ? "支付通知" : (b.source == 2 ? "语音录入" : (b.source == 1 ? "Agent / AI" : "手动录入")));
         createdText.setText(createdLabel(b));
         rawText.setText(b.source == 0
                 ? "—"

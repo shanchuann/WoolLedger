@@ -74,6 +74,9 @@ public class HomeFragment extends Fragment {
 
         v.findViewById(R.id.ai_row).setOnClickListener(x ->
                 startActivity(new Intent(getContext(), ChatActivity.class)));
+        TextView capture = v.findViewById(R.id.payment_inbox_home);
+        capture.setTextColor(ThemeUtil.ink(getContext()));
+        capture.setOnClickListener(x -> startActivity(new Intent(getContext(), com.wool.ledger.automation.PaymentInboxActivity.class)));
         seeAll.setOnClickListener(x -> startActivity(new Intent(getContext(), BillListActivity.class)));
         homeMore.setOnClickListener(x -> startActivity(new Intent(getContext(), BillListActivity.class)));
         v.findViewById(R.id.month_block).setOnClickListener(x ->
@@ -258,6 +261,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        if(getView()!=null){TextView capture=getView().findViewById(R.id.payment_inbox_home);int pending=new com.wool.ledger.automation.PaymentStore(requireContext()).pendingCount();capture.setText("支付通知 · "+pending+" 条待确认  ›");}
         load();
         // 从「这一格」长按拖过来：源格先空着，落点跟着系统拖放的高亮走
         if (com.wool.ledger.util.DragBus.active() && table != null) {

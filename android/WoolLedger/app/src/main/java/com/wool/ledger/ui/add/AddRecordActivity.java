@@ -656,7 +656,7 @@ public class AddRecordActivity extends AppCompatActivity {
         b.billTime = editing != null ? editing.billTime : DateUtil.nowTime();
         // 录入时间以真正点保存的时刻为准（页面可能开着好几分钟）
         b.createTime = editing != null ? editing.createTime : DateUtil.nowFull();
-        b.source = voiceUsed ? 2 : (aiUsed ? 1 : 0);
+        b.source = editing != null ? editing.source : (voiceUsed ? 2 : (aiUsed ? 1 : 0));
 
         btnSave.setEnabled(false);
         io.execute(new Runnable() {
@@ -939,6 +939,9 @@ public class AddRecordActivity extends AppCompatActivity {
 
     /** 模型就绪后开始录音：录音中再点一下按钮立刻结束，10 秒兜底自动结束 */
     private void startRecording(final android.widget.TextView hint) {
+        if (androidx.core.content.ContextCompat.checkSelfPermission(this, android.Manifest.permission.RECORD_AUDIO) != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+            voiceBusy=false;restoreMicButton();android.widget.Toast.makeText(this,"请先授予麦克风权限",android.widget.Toast.LENGTH_SHORT).show();return;
+        }
         final int rate = 16000;
         final int minBuf = android.media.AudioRecord.getMinBufferSize(rate,
                 android.media.AudioFormat.CHANNEL_IN_MONO, android.media.AudioFormat.ENCODING_PCM_16BIT);

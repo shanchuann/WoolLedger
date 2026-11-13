@@ -183,7 +183,7 @@ public class OfflineParser {
             Matcher m = Pattern.compile("(\\d{1,2})\\s*月\\s*(\\d{1,2})\\s*[日号]").matcher(norm);
             if (m.find()) {
                 String ym = DateUtil.thisMonth();
-                r.date = ym + "-" + String.format("%02d", Integer.parseInt(m.group(2)));
+                r.date = ym.substring(0,4) + "-" + String.format(java.util.Locale.ROOT,"%02d-%02d", Integer.parseInt(m.group(1)), Integer.parseInt(m.group(2)));
             } else {
                 Matcher d = Pattern.compile("(\\d{1,2})\\s*[日号]").matcher(norm);
                 if (d.find()) {

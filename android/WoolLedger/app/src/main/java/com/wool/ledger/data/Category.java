@@ -31,7 +31,9 @@ public class Category {
         ALL.add(new Category("stay",      "住宿", 0xFFC8A98B, 0));
         ALL.add(new Category("medical",   "医疗", 0xFFD98CA8, 0));
         ALL.add(new Category("other",     "其他", 0xFF9AA0A6, 0));
-        // 收入 5 类
+        // 收入分类
+        ALL.add(new Category("income_other", "其他收入", 0xFF4FB286, 1));
+        // 原有收入分类
         ALL.add(new Category("parttime",  "兼职", 0xFF4FB286, 1));
         ALL.add(new Category("prize",     "奖学金", 0xFF63B7A8, 1));
         ALL.add(new Category("gift",      "红包", 0xFFD9A05B, 1));

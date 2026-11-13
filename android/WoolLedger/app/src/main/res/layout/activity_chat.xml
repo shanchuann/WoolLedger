@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- 蓝羊羊 · 说一句就记（复刻 preview #s-chat）
      纸底 + 44dp 网格（ChatBackdrop 代码绘制）→ 页头 → 对话流 → 建议 chips → 输入条 -->
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/chat_frame"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -44,7 +44,7 @@
                     style="@style/Text.Title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="蓝羊羊" />
+                    android:text="蓝羊羊 Agent" />
 
                 <TextView
                     android:id="@+id/chat_sub"
@@ -60,7 +60,10 @@
                 android:layout_height="wrap_content"
                 android:includeFontPadding="false"
                 android:letterSpacing="0.14"
-                android:text="AI"
+                android:id="@+id/chat_inbox"
+                android:minHeight="48dp"
+                android:gravity="center"
+                android:text="待确认"
                 android:textColor="@color/ink3"
                 android:textSize="9sp" />
         </LinearLayout>
@@ -197,7 +200,7 @@
                 android:focusable="true"
                 android:padding="9dp"
                 android:src="@drawable/ic_arrow"
-                android:tint="#FFFFFF" />
+                app:tint="#FFFFFF" />
         </LinearLayout>
     </LinearLayout>
 </FrameLayout>

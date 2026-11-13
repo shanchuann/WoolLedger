@@ -485,7 +485,7 @@ public class CellActivity extends AppCompatActivity {
             rect.set(0, 0, w, h);
             canvas.drawRoundRect(rect, r, r, fill);
             text.setColor(android.graphics.Color.WHITE);
-            text.setTypeface(android.graphics.Typeface.create("sans-serif-medium", 0));
+            text.setTypeface(android.graphics.Typeface.create("sans-serif-medium", android.graphics.Typeface.NORMAL));
             text.setTextSize(9.5f * density);       // 课表里金额是 9.5sp
             text.setTextAlign(android.graphics.Paint.Align.CENTER);
             String s = (bill.isIncome() ? "+" : "-") + Money.shortFmt(bill.amount);

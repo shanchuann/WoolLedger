@@ -61,6 +61,7 @@ public class BillDao {
 
     public long insert(Bill b) {
         long id = helper.getWritableDatabase().insert("bill", null, values(b));
+        if (id < 0) throw new IllegalStateException("账目保存失败");
         b.id = id;
         return id;
     }
@@ -220,7 +221,17 @@ public class BillDao {
     }
 
     public void clearAll() {
-        helper.getWritableDatabase().delete("bill", null, null);
+        SQLiteDatabase db = helper.getWritableDatabase();
+        db.beginTransaction();
+        try {
+            db.delete("bill", null, null);
+            // Keep event tombstones: replayed notifications must not repopulate a cleared ledger.
+            db.execSQL("UPDATE payment_event SET state='ignored', raw='', merchant='', snapshot='', transaction_id='', amount=0, bill_id=0");
+            db.execSQL("UPDATE agent_action SET state='cancelled' WHERE state IN ('pending','applied')");
+            db.execSQL("UPDATE agent_action SET payload='{}', before_json='[]', after_json='[]'");
+            db.delete("agent_message", null, null);
+            db.setTransactionSuccessful();
+        } finally { db.endTransaction(); }
     }
 
     public boolean isEmpty() {

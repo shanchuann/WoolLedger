@@ -154,6 +154,14 @@ public class SettingsFragment extends Fragment {
         });
         toggle(getString(R.string.settings_overbudget), true);
 
+        group("自动记账与 Agent");
+        rowTap("支付通知自动记账", Prefs.autoCapture(c) ? "已开启 · 查看待确认" : "未开启", () -> startActivity(new Intent(c, com.wool.ledger.automation.PaymentInboxActivity.class)));
+        rowTap("蓝羊羊 Agent", "查账 / 记账 / 对账", () -> startActivity(new Intent(c, com.wool.ledger.ui.chat.ChatActivity.class)));
+        rowTap("联网理解请求", Prefs.agentOnline(c) ? "已开启" : "本地工具模式", () -> {
+            if(Prefs.agentOnline(c)){Prefs.setAgentOnline(c,false);build();}
+            else new android.app.AlertDialog.Builder(c).setTitle("开启联网 Agent？").setMessage("将向你配置的模型服务发送请求、最近对话与最多20笔近期账目摘要，以理解多轮指令。支付通知原文不会发送。服务可能收费；不开启时仍可使用本地记账、查账、对账工具。任何写账操作仍需确认。").setNegativeButton("取消",null).setPositiveButton("开启",(dialog,which)->{Prefs.setAgentOnline(c,true);build();}).show();
+        });
+
         group(getString(R.string.settings_api_title));
         final EditText base = input(Prefs.apiBase(c), InputType.TYPE_TEXT_VARIATION_URI);
         final EditText key = input(Prefs.apiKey(c), InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
@@ -535,7 +543,7 @@ public class SettingsFragment extends Fragment {
                         .append(b.categoryName()).append(',')
                         .append(Money.plain(b.amount)).append(',')
                         .append('"').append(b.note == null ? "" : b.note.replace("\"", "\"\"")).append('"').append(',')
-                        .append(b.source == 2 ? "语音" : (b.source == 1 ? "AI" : "手动")).append('\n');
+                        .append(b.source == 3 ? "支付通知" : (b.source == 2 ? "语音" : (b.source == 1 ? "Agent/AI" : "手动"))).append('\n');
             }
             String name = "wool-" + new SimpleDateFormat("yyyyMMdd-HHmm", Locale.CHINA).format(new Date()) + ".csv";
             byte[] data = ("\ufeff" + sb).getBytes("UTF-8");

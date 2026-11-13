@@ -221,6 +221,16 @@
             android:text="日均可花 ¥0" />
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/payment_inbox_home"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:gravity="center_vertical"
+        android:text="支付通知 · 待确认  ›"
+        android:textSize="14sp"
+        android:padding="12dp" />
+
     <!-- AI 月报 -->
     <LinearLayout
         android:id="@+id/ai_row"

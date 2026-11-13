@@ -40,6 +40,7 @@ android {
             abiFilters 'arm64-v8a', 'x86_64'
         }
         applicationId "com.wool.ledger"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         minSdk 24
         targetSdk 35
         versionCode appVersionCode
@@ -68,6 +69,13 @@ android {
         targetCompatibility JavaVersion.VERSION_17
     }
 
+    lint {
+        // Fragment 1.5.4's recursive lifecycle detector traverses settings callbacks for minutes.
+        // This app does not use LiveData.observe, addMenuProvider or fragment back callbacks.
+        // Re-enable these three checks when the upstream detector is upgraded.
+        disable 'FragmentLiveDataObserve', 'FragmentBackPressedCallback', 'FragmentAddMenuProvider'
+    }
+
     buildFeatures {
         buildConfig true
     }
@@ -80,6 +88,9 @@ android {
 }
 
 dependencies {
+    testImplementation "junit:junit:4.13.2"
+    androidTestImplementation "androidx.test:runner:1.7.0"
+    androidTestImplementation "junit:junit:4.13.2"
     // 解压 tar.bz2 语音模型
     implementation 'org.apache.commons:commons-compress:1.26.1'
     // 1.26 的 BZip2 流要用 commons-io 的 CloseShieldInputStream，漏了会在解压时 NoClassDefFoundError
